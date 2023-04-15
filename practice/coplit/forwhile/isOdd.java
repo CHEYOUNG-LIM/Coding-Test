@@ -1,3 +1,6 @@
+//isOdd
+//수를 입력받아 홀수인지 여부를 리턴해야 합니다.
+
 package coplit.forwhile;
 
 public class isOdd {
