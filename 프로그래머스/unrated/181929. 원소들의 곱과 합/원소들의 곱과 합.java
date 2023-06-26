@@ -6,9 +6,6 @@ class Solution {
         
         for(int i = 0 ; i < num_list.length ; i++) {
             a = a * num_list[i];
-        }
-        
-        for(int i = 0 ; i < num_list.length ; i++) {
             b = b + num_list[i];
         }
         
