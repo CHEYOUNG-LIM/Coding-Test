@@ -1,35 +1,23 @@
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 class Solution {
     public int[] solution(int[] arr, int[][] queries) {
-        List<Integer> answerList = new ArrayList<>();
-        
-        for (int[] query : queries) {
-            int s = query[0];
-            int e = query[1];
-            int k = query[2];
-            
-            int[] subArray = Arrays.copyOfRange(arr, s, e + 1);
-            Arrays.sort(subArray);
-            
-            int temp = -1;
-            for (int num : subArray) {
-                if (num > k) {
-                    temp = num;
-                    break;
+
+        int[] answer = new int[queries.length];
+        Arrays.fill(answer, -1);
+
+        for (int idx = 0; idx < queries.length; idx++) {
+            int[] query = queries[idx];
+            int s = query[0], e = query[1], k = query[2];
+
+            for (int i = s; i <= e; i++) {
+                if (k < arr[i]) {
+                    answer[idx] = answer[idx] == -1 ? arr[i] : Math.min(answer[idx], arr[i]);
                 }
             }
-            
-            answerList.add(temp);
+
         }
-        
-        int[] answer = new int[answerList.size()];
-        for (int i = 0; i < answerList.size(); i++) {
-            answer[i] = answerList.get(i);
-        }
-        
+
         return answer;
     }
 }
