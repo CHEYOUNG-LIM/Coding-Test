@@ -1,6 +1,7 @@
 // public class Solution {
 //     public int solution(String dartResult) {
 //         int[] scores = new int[3];
+        
 //         int currentIndex = 0; // 현재 기회 인덱스
         
 //         for (int i = 0; i < dartResult.length(); i++) {
@@ -42,188 +43,43 @@
 //     }
 // }
 
-import java.util.ArrayList;
+import java.util.*;
 class Solution {
     public int solution(String dartResult) {
-        int answer = 0;
-
-        ArrayList<String> list = new ArrayList<String>();
-
-        String nStr = "";
-        int cnt = 0;
-
-        for(int i = 0; i < dartResult.length(); i++) {
-            if(dartResult.charAt(i) >= 48 && dartResult.charAt(i) <= 57) {
-                cnt++;
-                nStr += dartResult.charAt(i);
+        Stack<Integer> stack = new Stack<>();
+        int sum = 0;
+        for (int i = 0; i < dartResult.length(); ++i) {
+            char c = dartResult.charAt(i);
+            if (Character.isDigit(c)) {
+                sum = (c - '0');
+                if (sum == 1 && i < dartResult.length() - 1 && dartResult.charAt(i + 1) == '0') {
+                    sum = 10;
+                    i++;
+                }
+                stack.push(sum);
             } else {
-                if(cnt > 0) {
-                    list.add(nStr);
-                    nStr = "";
-                    cnt = 0;
+                int prev = stack.pop();
+                if (c == 'D') {
+                    prev *= prev;
+                } else if (c == 'T') {
+                    prev = prev * prev * prev;
+                } else if (c == '*') {
+                    if (!stack.isEmpty()) {
+                        int val = stack.pop() * 2;
+                        stack.push(val);
+                    }
+                    prev *= 2;
+                } else if (c == '#') {
+                    prev *= (-1);
                 }
-                list.add(dartResult.charAt(i)+"");
+                // System.out.println(prev);
+                stack.push(prev);
             }
         }
-        int count = 0;
-
-        for(int i = 0; i < list.size(); i++) {
-            if(list.get(i).equals("S")) {
-                answer += (int)Math.pow(Integer.parseInt(list.get(i-1)), 1);
-                count++;
-            } else if(list.get(i).equals("D")) {
-                answer += (int)Math.pow(Integer.parseInt(list.get(i-1)), 2);
-                count++;
-            } else if(list.get(i).equals("T")) {
-                answer += (int)Math.pow(Integer.parseInt(list.get(i-1)), 3);
-                count++;
-            } else if(list.get(i).equals("#")) {
-                if(count == 1) {
-                    if(list.get(i-1).equals("S")) {
-                        answer -= Integer.parseInt(list.get(i-2));
-                        answer += Integer.parseInt(list.get(i-2)) * -1;
-                    } else if(list.get(i-1).equals("D")) {
-                        answer -= Math.pow(Integer.parseInt(list.get(i-2)), 2);
-                        answer += Math.pow(Integer.parseInt(list.get(i-2)), 2) * -1;
-                    } else if(list.get(i-1).equals("T")) {
-                        answer -= Math.pow(Integer.parseInt(list.get(i-2)), 3);
-                        answer += Math.pow(Integer.parseInt(list.get(i-2)), 3) * -1;
-                    }
-                } else if(count == 2) {
-                    if(list.get(i-1).equals("S")) {
-                        answer -= Integer.parseInt(list.get(i-2));
-                        answer += Integer.parseInt(list.get(i-2)) * -1;
-                    } else if(list.get(i-1).equals("D")) {
-                        answer -= Math.pow(Integer.parseInt(list.get(i-2)), 2);
-                        answer += Math.pow(Integer.parseInt(list.get(i-2)), 2) * -1;
-                    } else if(list.get(i-1).equals("T")) {
-                        answer -= Math.pow(Integer.parseInt(list.get(i-2)), 3);
-                        answer += Math.pow(Integer.parseInt(list.get(i-2)), 3) * -1;
-                    }
-                } else {
-                    if(list.get(i-1).equals("S")) {
-                        answer -= Integer.parseInt(list.get(i-2));
-                        answer += Integer.parseInt(list.get(i-2)) * -1;
-                    } else if(list.get(i-1).equals("D")) {
-                        answer -= Math.pow(Integer.parseInt(list.get(i-2)), 2);
-                        answer += Math.pow(Integer.parseInt(list.get(i-2)), 2) * -1;
-                    } else if(list.get(i-1).equals("T")) {
-                        answer -= Math.pow(Integer.parseInt(list.get(i-2)), 3);
-                        answer += Math.pow(Integer.parseInt(list.get(i-2)), 3) * -1;
-                    }
-                }
-            } else if(list.get(i).equals("*")) {
-                if(count == 1) {
-                    if(list.get(i-1).equals("S")) {
-                        answer -= Integer.parseInt(list.get(i-2));
-                        answer += (Integer.parseInt(list.get(i-2))) * 2;
-                    } else if(list.get(i-1).equals("D")) {
-                        answer -= Math.pow(Integer.parseInt(list.get(i-2)), 2);
-                        answer += (Math.pow(Integer.parseInt(list.get(i-2)), 2)) * 2;
-                    } else if(list.get(i-1).equals("T")) {
-                        answer -= Math.pow(Integer.parseInt(list.get(i-2)), 3);
-                        answer += (Math.pow(Integer.parseInt(list.get(i-2)), 3)) * 2;
-                    }
-                } else if(count == 2) {
-                    if(list.get(i-1).equals("S")) {
-                        answer -= Integer.parseInt(list.get(i-2));
-                        answer += Integer.parseInt(list.get(i-2)) * 2;
-                    } else if(list.get(i-1).equals("D")) {
-                        answer -= Math.pow(Integer.parseInt(list.get(i-2)), 2);
-                        answer += (Math.pow(Integer.parseInt(list.get(i-2)), 2)) * 2;
-                    } else if(list.get(i-1).equals("T")) {
-                        answer -= Math.pow(Integer.parseInt(list.get(i-2)), 3);
-                        answer += (Math.pow(Integer.parseInt(list.get(i-2)), 3)) * 2;
-                    } 
-
-                    if(list.get(i-3).equals("S")) {
-                        answer -= Integer.parseInt(list.get(i-4));
-                        answer += (Integer.parseInt(list.get(i-4))) * 2;
-                    } else if(list.get(i-3).equals("D")) {
-                        answer -= Math.pow(Integer.parseInt(list.get(i-4)), 2);
-                        answer += (Math.pow(Integer.parseInt(list.get(i-4)), 2)) * 2;
-                    } else if(list.get(i-3).equals("T")) {
-                        answer -= Math.pow(Integer.parseInt(list.get(i-4)), 3);
-                        answer += (Math.pow(Integer.parseInt(list.get(i-4)), 3)) * 2;
-                    }
-
-                    if(list.get(i-4).equals("S")) {
-                        if(list.get(i-3).equals("#")) {
-                            answer -= (Integer.parseInt(list.get(i-5))*-1);
-                            answer += (Integer.parseInt(list.get(i-5))*-1) * 2;
-                        } else if(list.get(i-3).equals("*")) {
-                            answer -= Integer.parseInt(list.get(i-5)) * 2;
-                            answer += Integer.parseInt(list.get(i-5)) * 4;
-                        }
-                    } else if(list.get(i-4).equals("D")) {
-                        if(list.get(i-3).equals("#")) {
-                            answer -= (Math.pow(Integer.parseInt(list.get(i-5)), 2) * -1);
-                            answer += (Math.pow(Integer.parseInt(list.get(i-5)), 2) * -1) * 2;
-                        } else if(list.get(i-3).equals("*")) {
-                            answer -= Math.pow(Integer.parseInt(list.get(i-5)), 2) * 2;
-                            answer += Math.pow(Integer.parseInt(list.get(i-5)), 2) * 4;
-                        }
-                    } else if(list.get(i-4).equals("T")) {
-                        if(list.get(i-3).equals("#")) {
-                            answer -= (Math.pow(Integer.parseInt(list.get(i-5)), 3) * -1);
-                            answer += (Math.pow(Integer.parseInt(list.get(i-5)), 3) * -1) * 2;
-                        } else if(list.get(i-3).equals("*")) {
-                            answer -= Math.pow(Integer.parseInt(list.get(i-5)), 3) * 2;
-                            answer += Math.pow(Integer.parseInt(list.get(i-5)), 3) * 4;
-                        }
-                    }
-
-                } else if(count == 3) {
-                    if(list.get(i-1).equals("S")) {
-                        answer -= Integer.parseInt(list.get(i-2));
-                        answer += (Integer.parseInt(list.get(i-2))) * 2;
-                    } else if(list.get(i-1).equals("D")) {
-                        answer -= Math.pow(Integer.parseInt(list.get(i-2)), 2);
-                        answer += (Math.pow(Integer.parseInt(list.get(i-2)), 2)) * 2;
-                    } else if(list.get(i-1).equals("T")) {
-                        answer -= Math.pow(Integer.parseInt(list.get(i-2)), 3);
-                        answer += (Math.pow(Integer.parseInt(list.get(i-2)), 3)) * 2;
-                    } 
-
-                    if(list.get(i-3).equals("S")) {
-                        answer -= Integer.parseInt(list.get(i-4));
-                        answer += (Integer.parseInt(list.get(i-4))) * 2;
-                    } else if(list.get(i-3).equals("D")) {
-                        answer -= Math.pow(Integer.parseInt(list.get(i-4)), 2);
-                        answer += (Math.pow(Integer.parseInt(list.get(i-4)), 2)) * 2;
-                    } else if(list.get(i-3).equals("T")) {
-                        answer -= Math.pow(Integer.parseInt(list.get(i-4)), 3);
-                        answer += (Math.pow(Integer.parseInt(list.get(i-4)), 3)) * 2;
-                    }
-
-                    if(list.get(i-4).equals("S")) {
-                        if(list.get(i-3).equals("#")) {
-                            answer -= (Integer.parseInt(list.get(i-5))*-1);
-                            answer += (Integer.parseInt(list.get(i-5))*-1) * 2;
-                        } else if(list.get(i-3).equals("*")) {
-                            answer -= Integer.parseInt(list.get(i-5)) * 2;
-                            answer += Integer.parseInt(list.get(i-5)) * 4;
-                        }
-                    } else if(list.get(i-4).equals("D")) {
-                        if(list.get(i-3).equals("#")) {
-                            answer -= (Math.pow(Integer.parseInt(list.get(i-5)), 2) * -1);
-                            answer += (Math.pow(Integer.parseInt(list.get(i-5)), 2) * -1) * 2;
-                        } else if(list.get(i-3).equals("*")) {
-                            answer -= Math.pow(Integer.parseInt(list.get(i-5)), 2) * 2;
-                            answer += Math.pow(Integer.parseInt(list.get(i-5)), 2) * 4;
-                        }
-                    } else if(list.get(i-4).equals("T")) {
-                        if(list.get(i-3).equals("#")) {
-                            answer -= (Math.pow(Integer.parseInt(list.get(i-5)), 3) * -1);
-                            answer += (Math.pow(Integer.parseInt(list.get(i-5)), 3) * -1) * 2;
-                        } else if(list.get(i-3).equals("*")) {
-                            answer -= Math.pow(Integer.parseInt(list.get(i-5)), 3) * 2;
-                            answer += Math.pow(Integer.parseInt(list.get(i-5)), 3) * 4;
-                        }
-                    }
-                }
-            }
+        int totalScore = 0;
+        while (!stack.isEmpty()) {
+            totalScore += stack.pop();
         }
-        return answer;
+        return totalScore;
     }
 }
