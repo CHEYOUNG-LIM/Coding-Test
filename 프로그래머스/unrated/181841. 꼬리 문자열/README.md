@@ -1,10 +1,10 @@
 # [unrated] 꼬리 문자열 - 181841 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/181841?language=c) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/181841?language=java) 
 
 ### 성능 요약
 
-메모리: 4.18 MB, 시간: 0.01 ms
+메모리: 79.6 MB, 시간: 1.53 ms
 
 ### 구분
 
